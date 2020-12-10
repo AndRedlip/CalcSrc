@@ -13,6 +13,7 @@
 typedef struct stat_files_ext_t
 {
     unsigned int c;
+    unsigned int cs;
     unsigned int cpp;
     unsigned int as;
     unsigned int inc;
@@ -22,6 +23,7 @@ typedef struct stat_files_ext_t
 typedef struct stat_all_str_number_t
 {
     unsigned long c;
+    unsigned long cs;
     unsigned long cpp;
     unsigned long as;
     unsigned long inc;
@@ -31,6 +33,7 @@ typedef struct stat_all_str_number_t
 typedef struct stat_code_str_number_t
 {
     unsigned long c;
+    unsigned long cs;
     unsigned long cpp;
     unsigned long as;
     unsigned long inc;

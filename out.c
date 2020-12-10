@@ -114,6 +114,44 @@ void Out_statistic()
     /* ===================================== */
 
 
+    /* вывод статистики по .cs файлам и строкам */
+    for(int k = 0; k < 63; k++)
+    {
+        if(k == 0)
+        {
+            printf("%c .cs", 186);
+            k += 5;
+        }
+
+        printf(" ");
+        if(k == 15)
+        {
+            long temp = stat_files_ext.cs;
+            printf("%c %d", 186, stat_files_ext.cs);
+            temp = Length_number(temp);
+            if(temp != 0) k += temp + 1;
+        }
+
+        if(k == 31)
+        {
+            long temp = stat_all_str_number.cs;
+            printf("%c %ld", 186, stat_all_str_number.cs);
+            temp = Length_number(temp);
+            if(temp != 0) k += temp + 1;
+        }
+
+        if(k == 46)
+        {
+            long temp = stat_code_str_number.cs;
+            printf("%c %ld", 186, stat_code_str_number.cs);
+            temp = Length_number(temp);
+            if(temp != 0) k += temp + 1;
+        }
+    }
+    printf(" %c\n", 186);
+    /* ======================================== */
+
+
     /* вывод статистики по .cpp файлам и строкам */
     for(int k = 0; k < 63; k++)
     {
@@ -286,24 +324,24 @@ void Out_statistic()
         printf(" ");
         if(k == 15)
         {
-            long temp = stat_files_ext.inc + stat_files_ext.c + stat_files_ext.cpp + stat_files_ext.as + stat_files_ext.h;
-            printf("%c %d", 186, stat_files_ext.inc + stat_files_ext.c + stat_files_ext.cpp + stat_files_ext.as + stat_files_ext.h);
+            long temp = stat_files_ext.inc + stat_files_ext.c + stat_files_ext.cpp + stat_files_ext.as + stat_files_ext.h + stat_files_ext.cs;
+            printf("%c %d", 186, stat_files_ext.inc + stat_files_ext.c + stat_files_ext.cpp + stat_files_ext.as + stat_files_ext.h + stat_files_ext.cs);
             temp = Length_number(temp);
             if(temp != 0) k += temp + 1;
         }
 
         if(k == 31)
         {
-            long temp = stat_all_str_number.inc + stat_all_str_number.as + stat_all_str_number.c + stat_all_str_number.cpp + stat_all_str_number.h;
-            printf("%c %ld", 186, stat_all_str_number.inc + stat_all_str_number.as + stat_all_str_number.c + stat_all_str_number.cpp + stat_all_str_number.h);
+            long temp = stat_all_str_number.inc + stat_all_str_number.as + stat_all_str_number.c + stat_all_str_number.cpp + stat_all_str_number.h + stat_all_str_number.cs;
+            printf("%c %ld", 186, stat_all_str_number.inc + stat_all_str_number.as + stat_all_str_number.c + stat_all_str_number.cpp + stat_all_str_number.h + stat_all_str_number.cs);
             temp = Length_number(temp);
             if(temp != 0) k += temp + 1;
         }
 
         if(k == 46)
         {
-            long temp = stat_code_str_number.inc + stat_code_str_number.as + stat_code_str_number.c + stat_code_str_number.cpp + stat_code_str_number.h;
-            printf("%c %ld", 186, stat_code_str_number.inc + stat_code_str_number.as + stat_code_str_number.c + stat_code_str_number.cpp + stat_code_str_number.h);
+            long temp = stat_code_str_number.inc + stat_code_str_number.as + stat_code_str_number.c + stat_code_str_number.cpp + stat_code_str_number.h + stat_code_str_number.cs;
+            printf("%c %ld", 186, stat_code_str_number.inc + stat_code_str_number.as + stat_code_str_number.c + stat_code_str_number.cpp + stat_code_str_number.h + stat_code_str_number.cs);
             temp = Length_number(temp);
             if(temp != 0) k += temp + 1;
         }

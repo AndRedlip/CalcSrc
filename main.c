@@ -34,7 +34,7 @@
 
 typedef enum {false, true} boolean;
 
-typedef enum {e_ext_nf, e_ext_cpp, e_ext_c, e_ext_as, e_ext_h, e_ext_inc} ext ;
+typedef enum {e_ext_nf, e_ext_cpp, e_ext_c, e_ext_as, e_ext_h, e_ext_inc, e_ext_cs} ext ;
 
 struct stat_all_str_number_t stat_all_str_number;
 
@@ -268,6 +268,37 @@ boolean Is_ext_c(int i)
 
 /* =====================================================================
  *
+ * Is_ext_cs
+ *
+ * =====================================================================
+ * функция которая смотрит строку из массива uc_directory_and_file_names по индексу который на входе
+ * и определяет,является ли файл в строке исходным файлом с расширением .cs
+ *
+ *  Вход:                               индекс строки указывающий на файл
+ *    глобальные переменные:            uc_directory_and_file_names массив с именами файлов
+ *                                      C_FILES_NAMES_LENGTH_MAX    максимальный размер длины пути + имени файла
+ *
+ *  Выход:                              0 (false)                  у файла расширение не .cs
+ *                                      1 (true)                   файл с расширением .cs
+ */
+boolean Is_ext_cs(int i)
+{
+    signed int j = -1;
+
+    while((++j < C_FILES_NAMES_LENGTH_MAX) && (uc_directory_and_file_names[i][j] != 0))
+    {
+        if(j + 4 < C_FILES_NAMES_LENGTH_MAX)
+        {
+            if((uc_directory_and_file_names[i][j] == '.') && (uc_directory_and_file_names[i][j+1] == 'c') &&
+             (uc_directory_and_file_names[i][j+2] == 's') && (uc_directory_and_file_names[i][j+3] == 0)) return true;
+        }
+    }
+
+    return false;
+}
+
+/* =====================================================================
+ *
  * Is_ext_cpp
  *
  * =====================================================================
@@ -420,6 +451,12 @@ int Search_source_files_in_directory(int i)
         if(Is_ext_c(i) == true)
         {
             int_file_curr = e_ext_c;
+            return i;
+        }
+
+        if(Is_ext_cs(i) == true)
+        {
+            int_file_curr = e_ext_cs;
             return i;
         }
 
@@ -784,7 +821,7 @@ void Search_and_read_all_source_files_in_directory()
                 if(Is_code_as() == true) int_source_file_str_code_number++;  // считаем сколько строк кода (без комментариев)
             }
 
-            if((int_file_curr == e_ext_c) || (int_file_curr == e_ext_cpp) || (int_file_curr == e_ext_h))
+            if((int_file_curr == e_ext_c) || (int_file_curr == e_ext_cpp) || (int_file_curr == e_ext_h) || (int_file_curr == e_ext_cs))
             {
                 if(Is_code_c(C_DONT_CLEAR) == true) int_source_file_str_code_number++;  // считаем сколько строк кода (без комментариев)
             }
@@ -801,6 +838,13 @@ void Search_and_read_all_source_files_in_directory()
             stat_files_ext.c++;
             stat_all_str_number.c  += int_source_file_str_all_number;
             stat_code_str_number.c += int_source_file_str_code_number;
+        }
+
+        if(int_file_curr == e_ext_cs)
+        {
+            stat_files_ext.cs++;
+            stat_all_str_number.cs  += int_source_file_str_all_number;
+            stat_code_str_number.cs += int_source_file_str_code_number;
         }
 
         if(int_file_curr == e_ext_cpp)
@@ -863,18 +907,21 @@ void Setup(char* ptr_dir_path)
 
     stat_all_str_number.as = 0;
     stat_all_str_number.c = 0;
+    stat_all_str_number.cs = 0;
     stat_all_str_number.cpp = 0;
     stat_all_str_number.h = 0;
     stat_all_str_number.inc = 0;
 
     stat_code_str_number.as = 0;
     stat_code_str_number.c = 0;
+    stat_code_str_number.cs = 0;
     stat_code_str_number.cpp = 0;
     stat_code_str_number.h = 0;
     stat_code_str_number.inc = 0;
 
     stat_files_ext.as = 0;
     stat_files_ext.c = 0;
+    stat_files_ext.cs = 0;
     stat_files_ext.cpp = 0;
     stat_files_ext.h = 0;
     stat_files_ext.inc = 0;
@@ -909,6 +956,8 @@ int main()
         int_index_search = 0;
 
         Input_path(ptr_dir_path);        // путь директории которую сканируем
+
+        if(uc_dir_path[0] == C_SYM_NEWPATH) continue; // если просто нажали Enter, то программа просит ввести заново путь
 
         if(Is_directory(ptr_dir_path) == false)    // проверка что такая директория существует
         {
